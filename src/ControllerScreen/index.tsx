@@ -5,6 +5,14 @@ import socketIOClient from "socket.io-client";
 type State={
     endpoint: string,
 }
+
+console.ignoredYellowBox = ['Remote debugger'];
+import { YellowBox } from 'react-native';
+YellowBox.ignoreWarnings([
+    'Unrecognized WebSocket connection option(s) `agent`, `perMessageDeflate`, `pfx`, `key`, `passphrase`, `cert`, `ca`, `ciphers`, `rejectUnauthorized`. Did you mean to put these under `headers`?'
+]);
+//ignore socket warning
+
 export default class ControllerScreen extends Component<{},State>{
     constructor(props){
         super(props);

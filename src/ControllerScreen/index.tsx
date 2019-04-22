@@ -1,9 +1,18 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { StyleSheet, View, Text, TextInput } from 'react-native';
 import socketIOClient from "socket.io-client";
+
+import Controller from './Controller';
+import FormPw from '../components/FormPw';
 
 type State={
     endpoint: string,
+    socket: any,
+    keys: string[],
+    num: number,
+    pw: string,
+    type: string,
+    connected: boolean,
 }
 
 console.ignoredYellowBox = ['Remote debugger'];
@@ -14,28 +23,60 @@ YellowBox.ignoreWarnings([
 //ignore socket warning
 
 export default class ControllerScreen extends Component<{},State>{
-    constructor(props){
-        super(props);
-        this.state={
-            endpoint: 'http://127.0.0.1:4001',
-        }
+    state={
+        endpoint: 'http://49.236.137.170:4001/',
+        socket: null,
+        keys: ['','forward','','left','','right','','backward',''],
+        num: 9,
+        pw: '',
+        type: 'c',
+        connected: false,
     }
     componentDidMount=()=>{
         const { endpoint } = this.state;
-        this.socket = socketIOClient(endpoint);
-        this.socket.emit('method1','hi 4001, i am rn');
+        const socket = socketIOClient(endpoint);
+        this.setState({socket})
+        socket.emit('method1','hi 4001, i am rn');
+
+        socket.on('found room',()=>{
+
+        });
+        socket.on('rejected room',()=>{
+
+        })
     }
+
     sendSocket = ()=>{
-        this.socket.emit('json',new Date());
+        if(this.state.toggle){
+            this.setState({toggle: !this.state.toggle});
+            this.setState({interval: setInterval(()=>{this.state.socket.emit('json',new Date()),40})});
+        }
+        else{
+            this.setState({toggle: !this.state.toggle});
+            clearInterval(this.state.interval)
+        }
+        
+        // this.state.socket.emit('json', new Date());
+    }
+
+    onChange = (pw)=>{
+        this.setState({pw});
+    }
+
+    findRoom = (pw)=>{
+        const socket=this.state.socket;
+        socket.emit('find room',[pw,this.state.type]);
     }
     render(){
         return(
             <View>
                 <Text>ControllerScreen</Text>
-                <Text>조종하는 화면 필요.</Text>
-                <Text>조종이냐, 드론이냐 결정 필요.</Text>
-                <Text>소켓을 통한 통신 및 페어링 결정 알고리즘 필요.</Text>
                 <Text onPress={this.sendSocket}>send json</Text>
+                <FormPw pw={this.state.pw} onChange={this.onChange} onSubmit={this.findRoom}/>
+                <Controller keys={this.state.keys} num={this.state.num} />
+                {this.state.logs.map((e,i)=>(
+                    <Text key={i}>{e} ms</Text>
+                ))}
             </View>
         );
     }

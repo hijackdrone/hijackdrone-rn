@@ -96,7 +96,7 @@ export default class DroneScreen extends Component{
                         :<Text>Not found</Text>
                 }
                 <FormPw pw={this.state.pw_typing} onChange={this.onChange} findRoom={this.findRoom}/>
-                <Text onPress={this.toggleUpdateWithSensor}>{this.state.updating?'Activate Sensor':'Deactivate Sensor'}</Text>
+                <Text onPress={this.toggleUpdateWithSensor}>{this.state.updating?'Deactivate Sensor':'Activate Sensor'}</Text>
                 <FC info="Accel" data={this.state.accel}/>
                 <FC info="Gyro" data={this.state.gyro}/>
                 <Text>error: {this.state.error}</Text>

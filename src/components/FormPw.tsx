@@ -2,32 +2,49 @@ import React, {Component} from 'react';
 import {StyleSheet, View, Text, TextInput} from 'react-native';
 
 export type Props={
+    socket: any,
     pw: string,
-    onChange: (pw: string)=>any,
-    findRoom: (pw: string)=>any,
+    onSubmit: (pw: string)=>any,
+    changeState: (obj: any)=>any,
+    found: boolean,
+    roll: string,
 }
-
-export default class FormPW extends Component<Props,{}>{
-    state:{
-        typing: false,
+type State={
+    pw: string
+}
+export default class FormPW extends Component<Props,State>{
+    state: State={
+        pw: '',
+    }
+    findRoom = (pw: string)=>{
+        if(this.props.pw !== this.state.pw)
+            this.props.socket.emit('find room',[pw, this.props.roll]);
+    }
+    leaveRoom = (pw: string)=>{
+        this.props.socket.emit('leave room',[pw,this.props.roll]);
+        this.props.changeState({pw: '', found: false, connected: false});
     }
     render(){
         return(
             <View>
                 <View style={style.root}>
-                    <TextInput style={style.input}
+                    <TextInput style={!this.props.found?style.input:[style.input,style.found]}
                         returnKeyType='send'
-                        onChangeText={this.props.onChange}
+                        onChangeText={(pw)=>this.setState({pw})}
                         placeholder='type your room pw'
-                        onFocus={()=>this.setState({typing:true})}
-                        onBlur={()=>this.setState({typing: false})}
-                        onSubmitEditing={()=> this.props.findRoom(this.props.pw)}
-                        value={this.props.pw}
+                        onSubmitEditing={()=> {
+                            this.props.onSubmit(this.state.pw);
+                            this.findRoom(this.state.pw)}
+                        }
+                        value={this.state.pw}
+                        editable={!this.props.found}
                     />
-                    <Text onPress={()=> this.props.findRoom(this.props.pw) }>Connect</Text>
-                </View>
-                <View>
-                    <Text>Connected or not</Text>
+                    <View>
+                        {!this.props.found
+                        ?<Text style={style.connect} onPress={()=> this.findRoom(this.state.pw) }>Connect</Text>
+                        :<Text style={style.connect} onPress={()=>this.leaveRoom(this.state.pw)}>Disconnect</Text>
+                        }
+                    </View>
                 </View>
             </View>
         )
@@ -35,12 +52,26 @@ export default class FormPW extends Component<Props,{}>{
 }
 const style=StyleSheet.create({
     root: {
-        flexDirection: 'row',
+        flexDirection: 'column',
+        alignItems: 'center',
     },
     input: {
         width: 200,
         height: 20,
+        textAlign: 'center',
         borderBottomWidth: 1,
         borderBottomColor: 'gray',
     },
+    found: {
+        backgroundColor: 'black',
+        color: 'white',
+    },
+    connect: {
+        width: 200,
+        height: 20,
+        margin: 5,
+        textAlign: 'center',
+        color: 'white',
+        backgroundColor: 'green',
+    }
 })

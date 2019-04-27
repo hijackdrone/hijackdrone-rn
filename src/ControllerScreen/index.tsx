@@ -7,6 +7,9 @@ import socketIOClient from "socket.io-client";
 
 import Controller from './Controller';
 import FormPw from '../components/FormPw';
+import Status from '../components/Status';
+import Socket from '../components/Socket';
+
 import {endpoint} from '../endpoint';
 
 console.ignoredYellowBox = ['Remote debugger'];
@@ -22,10 +25,10 @@ type State={
     keys: string[],
     num: number,
     pw: string,
-    pw_typing: string,
     roll: string,
     connected: boolean,
     found: boolean,
+    error: boolean,
 }
 
 export default class ControllerScreen extends Component<{},State>{
@@ -35,66 +38,37 @@ export default class ControllerScreen extends Component<{},State>{
         keys: ['','forward','','left','','right','','backward',''],
         num: 9,
         pw: '',
-        pw_typing: '',
         roll: 'c',
         connected: false,
         found: false,
-    }
-    componentDidMount=()=>{
-    
-    }
-    connectSocket = ()=>{
-        const { endpoint } = this.state;
-        const socket = socketIOClient(endpoint);
-        if(this.state.socket) this.state.socket.disconnect();
-        this.setState({socket});
-        this.socketMethods(socket);
+        error: false,
     }
 
-    socketMethods = (socket)=>{
-        socket.emit('greeting','hi 4001, i am rn controller');
-        socket.on('found room',(pw)=>{
-            this.setState({found: true, pw});
-        });
-        socket.on('rejected room',()=>{
-            this.setState({found: false, connected: false});
-        });
-        socket.on('connected',()=>{
-            this.setState({connected: true});
-        });
-    }
-
-    disconnectSocket = ()=>{
-        const socket=this.state.socket;
-        socket.emit('leave room',[this.state.pw,this.state.roll]);
-        socket.disconnect();
-        this.setState({socket: null,found: false, connected: false});
-    }
-
-    onChange = (pw_typing: string)=>{
-        this.setState({pw_typing});
-    }
-
-    findRoom = (pw: string)=>{
-        const socket=this.state.socket;
-        if(this.state.pw !== pw){
-            socket.emit('find room',[pw, this.state.roll]);
-        }
+    extraSocketMethod = (socket)=>{
+        socket.emit('greeting',`rn controller : id = `);
     }
 
     render(){
         return(
             <View>
-                <NavigationEvents onDidFocus={this.connectSocket} onWillBlur={this.disconnectSocket}/>
-                <Text>ControllerScreen</Text>
-                {this.state.connected
-                    ?<Text>Connected!</Text>
-                    :this.state.found
-                        ?<Text>found</Text>
-                        :<Text>Not found</Text>
-                }
-                
-                <FormPw pw={this.state.pw_typing} onChange={this.onChange} findRoom={this.findRoom}/>
+                <Socket
+                    socket={this.state.socket}
+                    endpoint={this.state.endpoint}
+                    pw={this.state.pw}
+                    roll={this.state.roll}
+                    changeState={(state: any)=>this.setState(state)}
+                    extraSocketMethods={this.extraSocketMethod}
+                />
+                <Status connected={this.state.connected} found={this.state.found}></Status>
+
+                <FormPw
+                    socket={this.state.socket}
+                    pw={this.state.pw}
+                    onSubmit={(pw)=>this.setState({pw})}
+                    changeState={(state: any)=>this.setState(state)}
+                    found={this.state.found}
+                    roll={this.state.roll}
+                />
                 <Controller keys={this.state.keys} num={this.state.num} />
             </View>
         );

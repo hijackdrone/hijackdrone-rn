@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import { whileStatement } from '@babel/types';
 
 type ControllerProps={
     keys: string[],

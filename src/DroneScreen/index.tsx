@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, TextInput } from 'react-native';
-import { NavigationEvents } from "react-navigation";
-import { accelerometer, gyroscope, setUpdateIntervalForType, SensorTypes, isAvailable } from 'react-native-sensors';
+import { accelerometer, gyroscope, setUpdateIntervalForType, SensorTypes } from 'react-native-sensors';
 import FC from './FC';
 
 import FormPw from '../components/FormPw';
@@ -9,7 +8,6 @@ import Status from '../components/Status';
 import Socket from '../components/Socket';
 
 import {endpoint} from '../endpoint';
-import socketIOClient from "socket.io-client";
 
 let acc,gyro; //to make unsubscribing
 export default class DroneScreen extends Component{

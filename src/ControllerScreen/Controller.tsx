@@ -1,18 +1,25 @@
 import React, {Component} from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { Keys } from './Key';
 
 type ControllerProps={
-    keys: string[],
-    num: number,
+    socket: any,
+    pw: string,
 }
 export default class Controller extends Component<ControllerProps,{}>{
+    move=(value)=>{
+        const socket = this.props.socket;
+        const pw = this.props.pw;
+        socket.emit('move',[pw,value])
+    }
+    
     render(){
         return(
             <View style={style.root}>
-                {this.props.keys.map((e,i)=>(
-                    <View key={i} style={style.keys}>
-                        <Text style={style.text}>{e}</Text>
-                    </View>
+                {Keys.map((e,i)=>(
+                    <TouchableOpacity key={i} style={style.keys} onPress={()=>this.move(e.value)}>
+                        <Text style={style.text}>{e.text}</Text>
+                    </TouchableOpacity>
                 ))}
             </View>
         )

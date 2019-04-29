@@ -22,7 +22,6 @@ YellowBox.ignoreWarnings([
 type State={
     endpoint: string,
     socket: any,
-    keys: string[],
     num: number,
     pw: string,
     roll: string,
@@ -35,7 +34,6 @@ export default class ControllerScreen extends Component<{},State>{
     state: State={
         endpoint: endpoint,
         socket: null,
-        keys: ['','forward','','left','','right','','backward',''],
         num: 9,
         pw: '',
         roll: 'c',
@@ -69,7 +67,11 @@ export default class ControllerScreen extends Component<{},State>{
                     found={this.state.found}
                     roll={this.state.roll}
                 />
-                <Controller keys={this.state.keys} num={this.state.num} />
+
+                {this.state.connected
+                ?<Controller socket={this.state.socket} pw={this.state.pw} />
+                :<View></View>
+                }
             </View>
         );
     }

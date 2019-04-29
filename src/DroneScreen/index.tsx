@@ -19,6 +19,7 @@ export default class DroneScreen extends Component{
         connected: false,
         found: false,
         updating: false,
+        to: ''
     }
     componentDidMount=()=>{
         setUpdateIntervalForType(SensorTypes.accelerometer, 40); // defaults to 100ms
@@ -50,6 +51,13 @@ export default class DroneScreen extends Component{
     }
     extraSocketMethod = (socket)=>{
         socket.emit('greeting','rn drone : id = ');
+        socket.on('accept move',to=>{
+            this.move(to);
+        });
+    }
+    move = (value)=>{
+        //usb serial here
+        this.setState({to});
     }
     render(){
         return(
@@ -79,6 +87,7 @@ export default class DroneScreen extends Component{
                 <Text>{this.state.x}</Text>
                 <Text>{this.state.y}</Text>
                 <Text>{this.state.z}</Text>
+                <Text>{this.state.to}</Text>
             </View>
         );
     }

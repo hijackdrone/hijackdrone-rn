@@ -11,7 +11,7 @@ import {endpoint} from '../endpoint';
 
 let acc,gyro; //to make unsubscribing
 export default class DroneScreen extends Component{
-    state={x:0,y:0,z:0,accel:{x:0,y:0,z:0},gyro:{x:0,y:0,z:0},accel_speed:0,gyro_speed:0,error: '',
+    state={accel:{x:0,y:0,z:0},gyro:{x:0,y:0,z:0},accel_speed:0,gyro_speed:0,err: '',
         socket: null,
         endpoint: endpoint,
         pw: '',
@@ -54,8 +54,11 @@ export default class DroneScreen extends Component{
         socket.on('accept move',to=>{
             this.move(to);
         });
+        socket.on('crdis',()=>{
+            this.setState({connected: false})
+        });
     }
-    move = (value)=>{
+    move = (to)=>{
         //usb serial here
         this.setState({to});
     }
@@ -80,16 +83,12 @@ export default class DroneScreen extends Component{
                     roll={this.state.roll}
                 />
 
-                <Text onPress={this.toggleUpdateWithSensor}>{this.state.updating?'Deactivate Sensor':'Activate Sensor'}</Text>
+                <Text style={{marginTop: 10}} onPress={this.toggleUpdateWithSensor}>{this.state.updating?'Deactivate Sensor':'Activate Sensor'}</Text>
                 <FC info="Accel" data={this.state.accel}/>
                 <FC info="Gyro" data={this.state.gyro}/>
                 <Text>error: {this.state.error}</Text>
-                <Text>{this.state.x}</Text>
-                <Text>{this.state.y}</Text>
-                <Text>{this.state.z}</Text>
                 <Text>{this.state.to}</Text>
             </View>
         );
     }
 }
-

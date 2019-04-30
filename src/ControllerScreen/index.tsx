@@ -27,7 +27,7 @@ type State={
     roll: string,
     connected: boolean,
     found: boolean,
-    error: boolean,
+    err: string,
 }
 
 export default class ControllerScreen extends Component<{},State>{
@@ -39,11 +39,14 @@ export default class ControllerScreen extends Component<{},State>{
         roll: 'c',
         connected: false,
         found: false,
-        error: false,
+        err: '',
     }
 
     extraSocketMethod = (socket)=>{
         socket.emit('greeting',`rn controller : id = `);
+        socket.on('drdis',()=>{
+            this.setState({connected: false});
+        });
     }
 
     render(){
@@ -66,6 +69,7 @@ export default class ControllerScreen extends Component<{},State>{
                     changeState={(state: any)=>this.setState(state)}
                     found={this.state.found}
                     roll={this.state.roll}
+                    err={this.state.err}
                 />
 
                 {this.state.connected

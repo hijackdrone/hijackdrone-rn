@@ -27,8 +27,8 @@ export default class Socket extends Component<Props,{}>{
             // this.setState({found: true,pw});
             this.props.changeState({found: true,pw});
         });
-        socket.on('rejected room',()=>{
-            this.props.changeState({found: false, connected: false});
+        socket.on('rejected room',(err)=>{
+            this.props.changeState({found: false, connected: false, err});
         });
         socket.on('connected',()=>{
             this.props.changeState({connected: true});
@@ -38,7 +38,7 @@ export default class Socket extends Component<Props,{}>{
     disconnectSocket = (socket)=>{
         socket.emit('leave room',[this.props.pw, this.props.roll]);
         socket.disconnect();
-        this.props.changeState({socket: null, found: false, connected: false});
+        this.props.changeState({socket: null, found: false, connected: false,err: ''});
     }
 
     render(){

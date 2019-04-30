@@ -16,6 +16,7 @@ export default function Status(props){
 
 const style=StyleSheet.create({
     connected: {
+        marginTop: 30,
         flexDirection: 'row',
         justifyContent: 'center',
         textAlign: 'center',

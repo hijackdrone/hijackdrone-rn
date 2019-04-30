@@ -8,6 +8,7 @@ export type Props={
     changeState: (obj: any)=>any,
     found: boolean,
     roll: string,
+    err: string,
 }
 type State={
     pw: string
@@ -16,13 +17,16 @@ export default class FormPW extends Component<Props,State>{
     state: State={
         pw: '',
     }
+    componentDidMount=()=>{
+        this.setState({pw: ''});
+    }
     findRoom = (pw: string)=>{
         if(this.props.pw !== this.state.pw)
             this.props.socket.emit('find room',[pw, this.props.roll]);
     }
     leaveRoom = (pw: string)=>{
         this.props.socket.emit('leave room',[pw,this.props.roll]);
-        this.props.changeState({pw: '', found: false, connected: false});
+        this.props.changeState({pw: '', found: false, connected: false, err: ''});
     }
     render(){
         return(
@@ -30,7 +34,10 @@ export default class FormPW extends Component<Props,State>{
                 <View style={style.root}>
                     <TextInput style={!this.props.found?style.input:[style.input,style.found]}
                         returnKeyType='send'
-                        onChangeText={(pw)=>this.setState({pw})}
+                        onChangeText={(pw)=>{
+                            this.setState({pw});
+                            this.props.changeState({err: ''});
+                        }}
                         placeholder='type your room pw'
                         onSubmitEditing={()=> {
                             this.props.onSubmit(this.state.pw);
@@ -44,6 +51,7 @@ export default class FormPW extends Component<Props,State>{
                         ?<Text style={style.connect} onPress={()=> this.findRoom(this.state.pw) }>Connect</Text>
                         :<Text style={style.connect} onPress={()=>this.leaveRoom(this.state.pw)}>Disconnect</Text>
                         }
+                        <Text style={style.err}>{this.props.err}</Text>
                     </View>
                 </View>
             </View>
@@ -73,5 +81,10 @@ const style=StyleSheet.create({
         textAlign: 'center',
         color: 'white',
         backgroundColor: 'green',
+    },
+    err: {
+        textAlign: 'center',
+        color: 'red',
+        marginTop: 1,
     }
 })

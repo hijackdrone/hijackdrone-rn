@@ -12,12 +12,12 @@ export default class Controller extends Component<ControllerProps,{}>{
         const pw = this.props.pw;
         socket.emit('move',[pw,value])
     }
-    
+
     render(){
         return(
             <View style={style.root}>
                 {Keys.map((e,i)=>(
-                    <TouchableOpacity key={i} style={style.keys} onPress={()=>this.move(e.value)}>
+                    <TouchableOpacity key={i} style={style.keys} onPressIn={()=>this.move(e.value)}>
                         <Text style={style.text}>{e.text}</Text>
                     </TouchableOpacity>
                 ))}

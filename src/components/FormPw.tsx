@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, Text, TextInput} from 'react-native';
+import {StyleSheet, View, Text, TextInput, TouchableOpacity} from 'react-native';
 
 export type Props={
     socket: any,
@@ -48,8 +48,12 @@ export default class FormPW extends Component<Props,State>{
                     />
                     <View>
                         {!this.props.found
-                        ?<Text style={style.connect} onPress={()=> this.findRoom(this.state.pw) }>Connect</Text>
-                        :<Text style={style.connect} onPress={()=>this.leaveRoom(this.state.pw)}>Disconnect</Text>
+                        ?<TouchableOpacity onPress={()=> this.findRoom(this.state.pw)}>
+                            <Text style={style.connect}>Connect</Text>
+                        </TouchableOpacity>
+                        :<TouchableOpacity onPress={()=>this.leaveRoom(this.state.pw)}>
+                            <Text style={style.connect}>Disconnect</Text>
+                        </TouchableOpacity>
                         }
                         <Text style={style.err}>{this.props.err}</Text>
                     </View>

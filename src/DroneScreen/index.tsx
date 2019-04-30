@@ -81,6 +81,7 @@ export default class DroneScreen extends Component{
                     changeState={(state: any)=>this.setState(state)}
                     found={this.state.found}
                     roll={this.state.roll}
+                    err={this.state.err}
                 />
 
                 <Text style={{marginTop: 10}} onPress={this.toggleUpdateWithSensor}>{this.state.updating?'Deactivate Sensor':'Activate Sensor'}</Text>

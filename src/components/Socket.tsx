@@ -20,9 +20,6 @@ export default class Socket extends Component<Props,{}>{
         this.socketMethods(socket);
     }
     socketMethods = (socket)=>{
-        socket.on('connect_error',(err)=>{
-            // this.setState({connecting: true})
-        });
         socket.on('found room',(pw)=>{
             // this.setState({found: true,pw});
             this.props.changeState({found: true,pw});

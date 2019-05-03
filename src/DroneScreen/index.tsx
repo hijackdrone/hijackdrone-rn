@@ -1,17 +1,21 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput } from 'react-native';
+import { Platform, View, Text, TextInput, StyleSheet } from 'react-native';
 import { accelerometer, gyroscope, setUpdateIntervalForType, SensorTypes } from 'react-native-sensors';
 import FC from './FC';
 
 import FormPw from '../components/FormPw';
 import Status from '../components/Status';
 import Socket from '../components/Socket';
+import SerialSend from './SerialSend';
 
 import {endpoint} from '../endpoint';
 
 let acc,gyro; //to make unsubscribing
 export default class DroneScreen extends Component{
-    state={accel:{x:0,y:0,z:0},gyro:{x:0,y:0,z:0},accel_speed:0,gyro_speed:0,err: '',
+    state={
+        accel:{x:0,y:0,z:0},
+        gyro:{x:0,y:0,z:0},
+        err: '',
         socket: null,
         endpoint: endpoint,
         pw: '',
@@ -83,13 +87,29 @@ export default class DroneScreen extends Component{
                     roll={this.state.roll}
                     err={this.state.err}
                 />
-
-                <Text style={{marginTop: 10}} onPress={this.toggleUpdateWithSensor}>{this.state.updating?'Deactivate Sensor':'Activate Sensor'}</Text>
-                <FC info="Accel" data={this.state.accel}/>
-                <FC info="Gyro" data={this.state.gyro}/>
-                <Text>error: {this.state.error}</Text>
-                <Text>{this.state.to}</Text>
+                <View style={style.main}>
+                    <Text style={style.activate} onPress={this.toggleUpdateWithSensor}>{this.state.updating?'Deactivate Sensor':'Activate Sensor'}</Text>
+                    <FC info="Accel" data={this.state.accel}/>
+                    <FC info="Gyro" data={this.state.gyro}/>
+                    <SerialSend gyro={this.state.gyro} accel={this.state.accel} to={this.state.to} />                
+                    
+                    <Text>error: {this.state.err}</Text>
+                    <Text>{this.state.to}</Text>
+                </View>
             </View>
         );
     }
 }
+
+const style=StyleSheet.create({
+    main: {
+        padding: 10,
+    },
+    activate: {
+        marginTop: 10,
+        backgroundColor: '#777777',
+        width: 100,
+        textAlign: 'center',
+        color: 'white'
+    },
+})

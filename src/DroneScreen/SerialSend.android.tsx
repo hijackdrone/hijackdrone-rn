@@ -116,14 +116,14 @@ export default class SerialSend extends Component<Props,State>{
     }
 
     writeStringData=()=>{
-        const json={
-            data:{
+        if(this.state.connected){
+            const json={
                 gyro: this.props.gyro,
                 accel: this.props.accel,
-            },
-            value: this.props.to,
-        };
-        RNSerialport.writeString(JSON.stringify(json));
+                to: this.props.to,
+            };
+            RNSerialport.writeString(JSON.stringify(json));
+        }
     }
     
     componentDidUpdate=()=>{

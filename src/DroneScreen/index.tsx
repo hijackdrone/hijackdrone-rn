@@ -91,9 +91,14 @@ export default class DroneScreen extends Component{
                     <Text style={style.activate} onPress={this.toggleUpdateWithSensor}>{this.state.updating?'Deactivate Sensor':'Activate Sensor'}</Text>
                     <FC info="Accel" data={this.state.accel}/>
                     <FC info="Gyro" data={this.state.gyro}/>
-                    <SerialSend gyro={this.state.gyro} accel={this.state.accel} to={this.state.to} />                
+                    <SerialSend 
+                        gyro={this.state.gyro}
+                        accel={this.state.accel}
+                        to={this.state.to}
+                        connected={this.state.connected}    
+                    />                
                     
-                    <Text>error: {this.state.err}</Text>
+                    <Text>Socket error: {this.state.err}</Text>
                     <Text>{this.state.to}</Text>
                 </View>
             </View>

@@ -5,7 +5,8 @@ import { Platform, DeviceEventEmitter, View, Text } from "react-native";
 type Props={
     gyro: {x:number, y:number, z:number},
     accel: {x:number, y:number, z:number},
-    to: string
+    to: string,
+    connected: boolean,
 }
 type State={
     serviceStarted: boolean,
@@ -116,7 +117,7 @@ export default class SerialSend extends Component<Props,State>{
     }
 
     writeStringData=()=>{
-        if(this.state.connected){
+        if(this.state.connected && this.props.connected){
             const json={
                 gyro: this.props.gyro,
                 accel: this.props.accel,
@@ -135,10 +136,10 @@ export default class SerialSend extends Component<Props,State>{
             <View>
                 <Text>SerialSend component</Text>
                 <Text>Platform : {this.platform}</Text>
-                <Text>serviceStarted : {this.state.serviceStarted}</Text>
-                <Text>connected : {this.state.connected}</Text>
-                <Text>usbAttached : {this.state.usbAttached}</Text>
-                <Text>error : {this.state.error}</Text>
+                <Text>serviceStarted : {this.state.serviceStarted?'true':'false'}</Text>
+                <Text>connected : {this.state.connected?'true':'false'}</Text>
+                <Text>usbAttached : {this.state.usbAttached?'true':'false'}</Text>
+                <Text>Serial error : {this.state.error?'true':'false'}</Text>
             </View>
         )
     }

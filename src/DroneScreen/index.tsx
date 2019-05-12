@@ -112,7 +112,7 @@ const style=StyleSheet.create({
     },
     activate: {
         marginTop: 10,
-        backgroundColor: '#777777',
+        backgroundColor: '#D6B572',
         width: 100,
         textAlign: 'center',
         color: 'white'

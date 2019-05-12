@@ -126,7 +126,7 @@ export default class SerialSend extends Component<Props,State>{
             RNSerialport.writeString(JSON.stringify(json));
         }
     }
-    
+        
     componentDidUpdate=()=>{
         this.writeStringData();
     }

@@ -35,7 +35,7 @@ export default class Socket extends Component<Props,{}>{
     disconnectSocket = (socket)=>{
         socket.emit('leave room',[this.props.pw, this.props.roll]);
         socket.disconnect();
-        this.props.changeState({socket: null, found: false, connected: false,err: ''});
+        this.props.changeState({socket: null, found: false, connected: false,err: '',pw:''});
     }
 
     render(){

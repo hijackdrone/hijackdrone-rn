@@ -8,9 +8,22 @@ const TabNavigator = createMaterialTopTabNavigator({
     },
     {
         tabBarOptions:{
+            // activeTintColor: '#343434',
+            // inactiveTintColor: 'red',
+            labelStyle:{
+                marginTop: 10,
+                fontSize: 15,
+            },
             tabStyle:{
-                height: 150,
+                height: 80,
+            },
+            style: {
+                backgroundColor: '#005089',
+            },
+            indicatorStyle: {
+                backgroundColor: '#0C9BA9',
             }
+
         }
     }
 );

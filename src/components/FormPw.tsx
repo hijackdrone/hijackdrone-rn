@@ -84,7 +84,7 @@ const style=StyleSheet.create({
         margin: 5,
         textAlign: 'center',
         color: 'white',
-        backgroundColor: 'green',
+        backgroundColor: '#F66D79',
     },
     err: {
         textAlign: 'center',

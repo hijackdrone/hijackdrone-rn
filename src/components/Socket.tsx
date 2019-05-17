@@ -22,13 +22,13 @@ export default class Socket extends Component<Props,{}>{
     socketMethods = (socket)=>{
         socket.on('found room',(pw)=>{
             // this.setState({found: true,pw});
-            this.props.changeState({found: true,pw});
+            this.props.changeState({found: true,pw,err: ''});
         });
         socket.on('rejected room',(err)=>{
             this.props.changeState({found: false, connected: false, err});
         });
         socket.on('connected',()=>{
-            this.props.changeState({connected: true});
+            this.props.changeState({connected: true, err: ''});
         });
         this.props.extraSocketMethods(socket);
     }

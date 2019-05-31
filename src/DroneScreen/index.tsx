@@ -11,6 +11,7 @@ import SerialSend from './SerialSend';
 import {endpoint} from '../endpoint';
 
 let acc,gyro; //to make unsubscribing
+// let acc_v, gyro_v;   
 export default class DroneScreen extends Component{
     state={
         accel:{x:0,y:0,z:0},
@@ -26,7 +27,7 @@ export default class DroneScreen extends Component{
         to: ''
     }
     componentDidMount=()=>{
-        setUpdateIntervalForType(SensorTypes.accelerometer, 40); // defaults to 100ms
+        setUpdateIntervalForType(SensorTypes.accelerometer, 200); // defaults to 100ms
     }
     toggleUpdateWithSensor=()=>{
         if(this.state.updating){
@@ -42,6 +43,7 @@ export default class DroneScreen extends Component{
     subscribeGyroscope = () => {
         gyro = gyroscope.subscribe( ({x,y,z}) => {
             this.setState({gyro: {x,y,z}});
+            // gyro_v={x,y,z};
         },(error: string) => {
             this.setState({error})
         });
@@ -49,6 +51,7 @@ export default class DroneScreen extends Component{
     subscribeAccelerometer = () => {
         acc = accelerometer.subscribe( ({x,y,z}) => {
             this.setState({accel: {x,y,z}});
+            // acc_v={x,y,z}
         },(error: string) => {
             this.setState({error})
         });
@@ -88,13 +91,14 @@ export default class DroneScreen extends Component{
                     err={this.state.err}
                 />
                 <View style={style.main}>
-                    <Text style={style.activate} onPress={this.toggleUpdateWithSensor}>{this.state.updating?'Deactivate Sensor':'Activate Sensor'}</Text>
-                    <FC info="Accel" data={this.state.accel}/>
-                    <FC info="Gyro" data={this.state.gyro}/>
+                    <Text style={style.activate} onPress={()=>{this.toggleUpdateWithSensor()}}>{this.state.updating?'Deactivate Sensor':'Activate Sensor'}</Text>
+                    {/* <FC info="Accel" data={this.state.accel}/>
+                    <FC info="Gyro" data={this.state.gyro}/> */}
                     <SerialSend 
                         gyro={this.state.gyro}
                         accel={this.state.accel}
                         to={this.state.to}
+                        updating={this.state.updating}
                         connected={this.state.connected}    
                     />                
                     
@@ -115,6 +119,6 @@ const style=StyleSheet.create({
         backgroundColor: '#D6B572',
         width: 100,
         textAlign: 'center',
-        color: 'white'
+        color: '#ffffff',
     },
 })

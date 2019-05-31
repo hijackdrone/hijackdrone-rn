@@ -4464,18 +4464,20 @@ react-native-safe-area-view@^0.13.0:
 react-native-sensors@^5.1.8:
   version "5.1.8"
   resolved "https://registry.yarnpkg.com/react-native-sensors/-/react-native-sensors-5.1.8.tgz#07135a6f4f598fb8004ce5d01ec170c80a00626b"
+  integrity sha512-Buoxcs5zLv+SMtZSQXLYpq5XF4y3+9zFqrjeW6JFXUh69hQ2vwbFitMqKy0iyVuiv25vc7ZSazhEZ+t1jrGhRQ==
   dependencies:
     rxjs ">= 6"
-
-react-native-serialport@^1.3.1:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/react-native-serialport/-/react-native-serialport-1.3.1.tgz#5a34ec7248c1e09916bbc7a7a847fd9f38a391ed"
 
 react-native-tab-view@^1.2.0, react-native-tab-view@^1.3.4:
   version "1.3.4"
   resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-1.3.4.tgz#63fc3eb09652651d0ea0e016cff0f3a5e535f4de"
   dependencies:
     prop-types "^15.6.1"
+
+react-native-usbserial@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-usbserial/-/react-native-usbserial-1.0.1.tgz#f1a9b5e40a0dbee216b6e6f676f673b39743f2be"
+  integrity sha1-8am15AoNvuIWtub2dvZzs5dD8r4=
 
 react-native@0.59.5:
   version "0.59.5"
@@ -4831,7 +4833,14 @@ rx-lite@*, rx-lite@^4.0.8:
   version "4.0.8"
   resolved "https://registry.yarnpkg.com/rx-lite/-/rx-lite-4.0.8.tgz#0b1e11af8bc44836f04a6407e92da42467b79444"
 
-"rxjs@>= 6", rxjs@^6.4.0:
+"rxjs@>= 6":
+  version "6.5.2"
+  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.5.2.tgz#2e35ce815cd46d84d02a209fb4e5921e051dbec7"
+  integrity sha512-HUb7j3kvb7p7eCUHE3FqjoDsC1xfZQ4AHFWfTKSpZ+sAhhz5X1WX0ZuUqWbzB2QhSLp3DoLUG+hMdEDKqWo2Zg==
+  dependencies:
+    tslib "^1.9.0"
+
+rxjs@^6.4.0:
   version "6.4.0"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.4.0.tgz#f3bb0fe7bda7fb69deac0c16f17b50b0b8790504"
   dependencies:

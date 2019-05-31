@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { RNSerialport, definitions, actions, DefinitionsStatic, ReturnedDataTypes } from "react-native-serialport";
+import { UsbSerial} from 'react-native-usbserial';
 import { Platform, DeviceEventEmitter, View, Text } from "react-native";
 
 type Props={
@@ -7,6 +7,7 @@ type Props={
     accel: {x:number, y:number, z:number},
     to: string,
     connected: boolean,
+    updating: boolean,
 }
 type State={
     serviceStarted: boolean,
@@ -16,7 +17,11 @@ type State={
     baudRate: number,
     sendText: string,
     error?: boolean,
+    code?: string
 }
+
+const usbs = new UsbSerial();
+
 export default class SerialSend extends Component<Props,State>{
     state: State;
     platform: string;
@@ -33,89 +38,32 @@ export default class SerialSend extends Component<Props,State>{
           sendText: "HELLO",
         };
     }
+    getDeviceAsync= async ()=>{
+
+        try {
+            const deviceList = await usbs.getDeviceListAsync();
+            const firstDevice = deviceList[0];
+            this.setState({usbAttached: true,connected: true})
+            console.log(firstDevice);
     
+            if (firstDevice) {
+                const usbSerialDevice = await usbs.openDeviceAsync(firstDevice);
+                console.log(usbSerialDevice);
+                this.setState({serviceStarted:true})
+            }
+        } catch (err) {
+            console.warn(err);
+        }
+    }
     componentDidMount=()=>{
-        this.startUsbListener();
+        this.getDeviceAsync();
     }
-
     componentWillUnmount=()=>{
-        this.stopUsbListener();
+        this.setState({
+            usbAttached: false,
+            serviceStarted: false,
+        })
     }
-
-    startUsbListener=()=>{
-        DeviceEventEmitter.addListener(
-            actions.ON_SERVICE_STARTED,
-            this.onServiceStarted,
-            this
-        );
-        DeviceEventEmitter.addListener(
-            actions.ON_SERVICE_STOPPED,
-            this.onServiceStopped,
-            this
-        );
-        DeviceEventEmitter.addListener(
-            actions.ON_DEVICE_ATTACHED,
-            this.onDeviceAttached,
-            this
-        );
-        DeviceEventEmitter.addListener(
-            actions.ON_DEVICE_DETACHED,
-            this.onDeviceDetached,
-            this
-        );
-        DeviceEventEmitter.addListener(actions.ON_ERROR, this.onError, this);
-        DeviceEventEmitter.addListener(
-            actions.ON_CONNECTED,
-            this.onConnected,
-            this
-        );
-        DeviceEventEmitter.addListener(
-            actions.ON_DISCONNECTED,
-            this.onDisconnected,
-            this
-        );
-
-        RNSerialport.setAutoConnectBaudRate(this.state.baudRate);
-        RNSerialport.setInterface(this.state.interface);
-        RNSerialport.setAutoConnect(true);
-        RNSerialport.startUsbService();
-    };
-
-    stopUsbListener = async () => {
-        DeviceEventEmitter.removeAllListeners();
-        const isOpen = await RNSerialport.isOpen();
-        if (isOpen) {
-        //   Alert.alert("isOpen", isOpen);
-            RNSerialport.disconnect();
-        }
-        RNSerialport.stopUsbService();
-    };
-
-    onServiceStarted=(response)=>{
-        this.setState({ serviceStarted: true });
-        if (response.deviceAttached) {
-            this.onDeviceAttached();
-        }
-    }
-    onServiceStopped=()=>{
-        this.setState({ serviceStarted: false });
-    }
-    onDeviceAttached=()=>{
-        this.setState({ usbAttached: true });
-    }
-    onDeviceDetached=()=>{
-        this.setState({ usbAttached: false });
-    }
-    onConnected=()=>{
-        this.setState({ connected: true });
-    }
-    onDisconnected=()=>{
-        this.setState({ connected: false });
-    }
-    onError=()=>{
-        this.setState({ error: true });
-    }
-
     writeStringData=()=>{
         if(this.state.connected && this.props.connected){
             const json={
@@ -123,23 +71,23 @@ export default class SerialSend extends Component<Props,State>{
                 accel: this.props.accel,
                 to: this.props.to,
             };
-            RNSerialport.writeString(JSON.stringify(json));
+            usbs.writeAsync(JSON.stringify(json));
+            // usbs.writeStringData
         }
     }
-        
     componentDidUpdate=()=>{
         this.writeStringData();
     }
-    
     render(){
         return (
             <View>
                 <Text>SerialSend component</Text>
+                <Text>Serial Start : {this.props.updating && this.props.connected?'true':'false'}</Text>
                 <Text>Platform : {this.platform}</Text>
                 <Text>serviceStarted : {this.state.serviceStarted?'true':'false'}</Text>
-                <Text>connected : {this.state.connected?'true':'false'}</Text>
+                <Text>serial connected : {this.state.connected?'true':'false'}</Text>
                 <Text>usbAttached : {this.state.usbAttached?'true':'false'}</Text>
-                <Text>Serial error : {this.state.error?'true':'false'}</Text>
+                <Text>Serial error : {this.state.error?`${this.state.code}`:'false'}</Text>
             </View>
         )
     }

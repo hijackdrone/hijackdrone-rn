@@ -69,14 +69,16 @@ const style=StyleSheet.create({
     },
     input: {
         width: 200,
-        height: 20,
+        // height: 20,
+        paddingVertical: 0,
         textAlign: 'center',
+        color: '#000000',
         borderBottomWidth: 1,
-        borderBottomColor: 'gray',
+        borderBottomColor: '#111111',
     },
     found: {
-        backgroundColor: 'black',
-        color: 'white',
+        backgroundColor: '#000000',
+        color: '#ffffff',
     },
     connect: {
         width: 200,

@@ -2,7 +2,7 @@
   "name": "Commu_test",
   "version": "0.0.1",
   "private": true,
-  "proxy": "http://49.236.137.170:4001/",
+  "proxy": "http://ec2-13-124-16-66.ap-northeast-2.compute.amazonaws.com",
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest"

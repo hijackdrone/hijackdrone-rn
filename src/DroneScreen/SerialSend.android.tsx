@@ -8,6 +8,7 @@ type Props={
     to: string,
     connected: boolean,
     updating: boolean,
+    socket: any,
 }
 type State={
     serviceStarted: boolean,
@@ -17,7 +18,9 @@ type State={
     baudRate: number,
     sendText: string,
     error?: boolean,
-    code?: string
+    code?: string,
+    device: any,
+    debug?: any,
 }
 
 const usbs = new UsbSerial();
@@ -36,21 +39,23 @@ export default class SerialSend extends Component<Props,State>{
           baudRate: 9600,
           interface: -1,
           sendText: "HELLO",
+          device: '',
         };
     }
     getDeviceAsync= async ()=>{
-
         try {
             const deviceList = await usbs.getDeviceListAsync();
             const firstDevice = deviceList[0];
-            this.setState({usbAttached: true,connected: true})
-            console.log(firstDevice);
-    
+            // console.log(firstDevice);
             if (firstDevice) {
+                this.setState({usbAttached: true});
                 const usbSerialDevice = await usbs.openDeviceAsync(firstDevice);
-                console.log(usbSerialDevice);
-                this.setState({serviceStarted:true})
+                // console.log(usbSerialDevice);
+                this.setState({device: usbSerialDevice, connected: true, serviceStarted:true});
             }
+            DeviceEventEmitter.addListener('newData', (e) => {
+                this.props.socket.emit('debug',e);
+            });
         } catch (err) {
             console.warn(err);
         }
@@ -58,6 +63,11 @@ export default class SerialSend extends Component<Props,State>{
     componentDidMount=()=>{
         this.getDeviceAsync();
     }
+
+    readDevice = (id) => {
+        this.state.device.readDeviceAsync(id);
+    }
+    
     componentWillUnmount=()=>{
         this.setState({
             usbAttached: false,
@@ -65,13 +75,17 @@ export default class SerialSend extends Component<Props,State>{
         })
     }
     writeStringData=()=>{
-        if(this.state.connected && this.props.connected){
+        if(this.state.connected && this.props.connected && this.state.device){
             const json={
-                gyro: this.props.gyro,
-                accel: this.props.accel,
-                to: this.props.to,
+                g: this.props.gyro,
+                a: this.props.accel,
+                t: this.props.to,
             };
-            usbs.writeAsync(JSON.stringify(json));
+            // this.state.device.writeAsync(JSON.stringify(json));
+            this.state.device.writeAsync(this.props.to).then(()=>{
+                this.readDevice(this.state.device.id);
+            });
+            // usbs.writeStringData(JSON.stringify(json));
             // usbs.writeStringData
         }
     }
@@ -88,6 +102,7 @@ export default class SerialSend extends Component<Props,State>{
                 <Text>serial connected : {this.state.connected?'true':'false'}</Text>
                 <Text>usbAttached : {this.state.usbAttached?'true':'false'}</Text>
                 <Text>Serial error : {this.state.error?`${this.state.code}`:'false'}</Text>
+                <Text>Debug : {this.state.debug}</Text>
             </View>
         )
     }

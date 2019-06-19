@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import { UsbSerial} from 'react-native-usbserial';
+// import { UsbSerial} from 'react-native-usbserial';
+// import RNOtg from 'react-native-otg';
 import { Platform, DeviceEventEmitter, View, Text } from "react-native";
 
 type Props={
@@ -23,8 +24,8 @@ type State={
     debug?: any,
 }
 
-const usbs = new UsbSerial();
-
+// const usbs = new UsbSerial();
+// const usbs = new RNOtg();
 export default class SerialSend extends Component<Props,State>{
     state: State;
     platform: string;
@@ -42,31 +43,29 @@ export default class SerialSend extends Component<Props,State>{
           device: '',
         };
     }
-    getDeviceAsync= async ()=>{
-        try {
-            const deviceList = await usbs.getDeviceListAsync();
-            const firstDevice = deviceList[0];
-            // console.log(firstDevice);
-            if (firstDevice) {
-                this.setState({usbAttached: true});
-                const usbSerialDevice = await usbs.openDeviceAsync(firstDevice);
-                // console.log(usbSerialDevice);
-                this.setState({device: usbSerialDevice, connected: true, serviceStarted:true});
-            }
-            DeviceEventEmitter.addListener('newData', (e) => {
-                this.props.socket.emit('debug',e);
-            });
-        } catch (err) {
-            console.warn(err);
-        }
-    }
-    componentDidMount=()=>{
-        this.getDeviceAsync();
-    }
-
-    readDevice = (id) => {
-        this.state.device.readDeviceAsync(id);
-    }
+    // getDeviceAsync= async ()=>{
+    //     try {
+    //         const deviceList = await usbs.getDeviceListAsync();
+    //         const firstDevice = deviceList[0];
+    //         // console.log(firstDevice);
+    //         if (firstDevice) {
+    //             this.setState({usbAttached: true});
+    //             const usbSerialDevice = await usbs.openDeviceAsync(firstDevice);
+    //             // console.log(usbSerialDevice);
+    //             this.setState({device: usbSerialDevice, connected: true, serviceStarted:true});
+    //         }
+    //         DeviceEventEmitter.addListener('newData', (e) => {
+    //             this.props.socket.emit('debug',e);
+    //         });
+    //     } catch (err) {
+    //         console.warn(err);
+    //     }
+    // }
+    // componentDidMount=()=>{
+    //     this.setState({
+    //         device: usbs
+    //     })
+    // }
     
     componentWillUnmount=()=>{
         this.setState({
@@ -74,24 +73,21 @@ export default class SerialSend extends Component<Props,State>{
             serviceStarted: false,
         })
     }
-    writeStringData=()=>{
-        if(this.state.connected && this.props.connected && this.state.device){
-            const json={
-                g: this.props.gyro,
-                a: this.props.accel,
-                t: this.props.to,
-            };
-            // this.state.device.writeAsync(JSON.stringify(json));
-            this.state.device.writeAsync(this.props.to).then(()=>{
-                this.readDevice(this.state.device.id);
-            });
-            // usbs.writeStringData(JSON.stringify(json));
-            // usbs.writeStringData
-        }
-    }
-    componentDidUpdate=()=>{
-        this.writeStringData();
-    }
+    // writeStringData=()=>{
+    //     if(this.state.connected && this.props.connected && this.state.device){
+    //         const json={
+    //             g: this.props.gyro,
+    //             a: this.props.accel,
+    //             t: this.props.to,
+    //         };
+    //         this.state.device.writeAsync(this.props.to).then(()=>{
+    //             console.log('what');
+    //         });
+    //     }
+    // }
+    // componentDidUpdate=()=>{
+    //     this.writeStringData();
+    // }
     render(){
         return (
             <View>

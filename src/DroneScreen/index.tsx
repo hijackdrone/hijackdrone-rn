@@ -99,9 +99,10 @@ export default class DroneScreen extends Component{
                         accel={this.state.accel}
                         to={this.state.to}
                         updating={this.state.updating}
-                        connected={this.state.connected}    
-                    />                
-                    
+                        connected={this.state.connected}
+                        socket={this.state.socket}
+                    />{/* socket for debug */}
+
                     <Text>Socket error: {this.state.err}</Text>
                     <Text>{this.state.to}</Text>
                 </View>

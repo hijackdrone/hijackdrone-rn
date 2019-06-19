@@ -8,6 +8,7 @@ type Props={
     to: string,
     connected: boolean,
     updating: boolean,
+    socket?: any,
 }
 type State={
     serviceStarted: boolean,
@@ -18,6 +19,7 @@ type State={
     sendText: string,
     error?: boolean,
     code?: string
+    device?: any,
 }
 
 const usbs = new UsbSerial();
@@ -39,19 +41,27 @@ export default class SerialSend extends Component<Props,State>{
         };
     }
     getDeviceAsync= async ()=>{
-
         try {
             const deviceList = await usbs.getDeviceListAsync();
             const firstDevice = deviceList[0];
+            // console.log(firstDevice)
+            this.props.socket.emit('debugs',firstDevice.length);
+            // const arduino = deviceList.filter(e => e.vendorId===0x2341)[0];
             this.setState({usbAttached: true,connected: true})
-            console.log(firstDevice);
+            // console.log(firstDevice);
     
             if (firstDevice) {
+                this.props.socket.emit('debugs','will open device',new Date());
                 const usbSerialDevice = await usbs.openDeviceAsync(firstDevice);
+                this.props.socket.emit('debugs','will open device',new Date());
                 console.log(usbSerialDevice);
-                this.setState({serviceStarted:true})
+                this.setState({
+                    serviceStarted:true,
+                    device: usbSerialDevice
+                })
             }
         } catch (err) {
+            this.props.socket.emit('debugs','error with try');
             console.warn(err);
         }
     }
@@ -66,12 +76,13 @@ export default class SerialSend extends Component<Props,State>{
     }
     writeStringData=()=>{
         if(this.state.connected && this.props.connected){
+            console.log(this.state)
             const json={
                 gyro: this.props.gyro,
                 accel: this.props.accel,
                 to: this.props.to,
             };
-            usbs.writeAsync(JSON.stringify(json));
+            this.state.device.writeInDeviceAsync(this.state.device.deviceId, this.props.to);
             // usbs.writeStringData
         }
     }

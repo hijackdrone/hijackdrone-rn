@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import { UsbSerial} from 'react-native-usbserial';
-import { Platform, DeviceEventEmitter, View, Text } from "react-native";
+import { Platform, View, Text } from "react-native";
+import UsbArduino from './UsbArduino';
 
 type Props={
     gyro: {x:number, y:number, z:number},
@@ -19,10 +19,7 @@ type State={
     sendText: string,
     error?: boolean,
     code?: string
-    device?: any,
 }
-
-const usbs = new UsbSerial();
 
 export default class SerialSend extends Component<Props,State>{
     state: State;
@@ -40,33 +37,14 @@ export default class SerialSend extends Component<Props,State>{
           sendText: "HELLO",
         };
     }
-    getDeviceAsync= async ()=>{
-        try {
-            const deviceList = await usbs.getDeviceListAsync();
-            const firstDevice = deviceList[0];
-            // console.log(firstDevice)
-            this.props.socket.emit('debugs',firstDevice.length);
-            // const arduino = deviceList.filter(e => e.vendorId===0x2341)[0];
-            this.setState({usbAttached: true,connected: true})
-            // console.log(firstDevice);
     
-            if (firstDevice) {
-                this.props.socket.emit('debugs','will open device',new Date());
-                const usbSerialDevice = await usbs.openDeviceAsync(firstDevice);
-                this.props.socket.emit('debugs','will open device',new Date());
-                console.log(usbSerialDevice);
-                this.setState({
-                    serviceStarted:true,
-                    device: usbSerialDevice
-                })
-            }
-        } catch (err) {
-            this.props.socket.emit('debugs','error with try');
-            console.warn(err);
-        }
-    }
     componentDidMount=()=>{
-        this.getDeviceAsync();
+        UsbArduino.getArduino().then(()=>{
+            this.setState({
+                serviceStarted: true,
+                usbAttached: true,
+            })
+        })
     }
     componentWillUnmount=()=>{
         this.setState({
@@ -74,20 +52,9 @@ export default class SerialSend extends Component<Props,State>{
             serviceStarted: false,
         })
     }
-    writeStringData=()=>{
-        if(this.state.connected && this.props.connected){
-            console.log(this.state)
-            const json={
-                gyro: this.props.gyro,
-                accel: this.props.accel,
-                to: this.props.to,
-            };
-            this.state.device.writeInDeviceAsync(this.state.device.deviceId, this.props.to);
-            // usbs.writeStringData
-        }
-    }
+    
     componentDidUpdate=()=>{
-        this.writeStringData();
+        UsbArduino.writeArduino(this.props.to);
     }
     render(){
         return (

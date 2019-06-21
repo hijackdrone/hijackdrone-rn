@@ -1,9 +1,14 @@
 package com.commu_test;
 
 import android.app.Application;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.hardware.usb.UsbManager;
 
 import com.facebook.react.ReactApplication;
-import com.reactlibrary.RNOtgPackage;
+import com.melihyarikkaya.rnserialport.RNSerialportPackage;
 import com.sensors.RNSensorsPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -25,7 +30,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new RNOtgPackage(),
+            new RNSerialportPackage(),
             new RNSensorsPackage()
       );
     }

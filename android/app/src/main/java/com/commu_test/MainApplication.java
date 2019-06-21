@@ -8,13 +8,12 @@ import android.content.IntentFilter;
 import android.hardware.usb.UsbManager;
 
 import com.facebook.react.ReactApplication;
+import com.melihyarikkaya.rnserialport.RNSerialportPackage;
 import com.sensors.RNSensorsPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
-
-import com.commu_test.UsbArduinoPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -31,8 +30,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNSerialportPackage(),
             new RNSensorsPackage()
-//            new UsbArduinoPackage()
       );
     }
 

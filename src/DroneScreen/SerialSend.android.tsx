@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
+
 import { Platform, View, Text, DeviceEventEmitter } from "react-native";
 import { RNSerialport, definitions, actions } from "react-native-serialport";
+
 type Props={
     gyro: {x:number, y:number, z:number},
     accel: {x:number, y:number, z:number},
@@ -11,6 +13,25 @@ type Props={
 }
 
 export default class SerialSend extends Component<Props,{}>{
+    socket: any,
+}
+type State={
+    serviceStarted: boolean,
+    connected: boolean,
+    usbAttached: boolean,
+    interface: number,
+    baudRate: number,
+    sendText: string,
+    error?: boolean,
+    code?: string,
+    device: any,
+    debug?: any,
+}
+
+// const usbs = new UsbSerial();
+// const usbs = new RNOtg();
+export default class SerialSend extends Component<Props,State>{
+    state: State;
     platform: string;
     constructor(props) {
         super(props);
@@ -103,7 +124,6 @@ export default class SerialSend extends Component<Props,{}>{
     onReadData(data) {
         console.log(data.payload)
     }
-
     render(){
         return (
             <View>

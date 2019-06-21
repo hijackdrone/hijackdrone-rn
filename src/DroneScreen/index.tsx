@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Platform, View, Text, TextInput, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { accelerometer, gyroscope, setUpdateIntervalForType, SensorTypes } from 'react-native-sensors';
 import FC from './FC';
 
@@ -24,7 +24,7 @@ export default class DroneScreen extends Component{
         connected: false,
         found: false,
         updating: false,
-        to: ''
+        to: '',
     }
     componentDidMount=()=>{
         setUpdateIntervalForType(SensorTypes.accelerometer, 200); // defaults to 100ms
@@ -69,6 +69,9 @@ export default class DroneScreen extends Component{
         //usb serial here
         this.setState({to});
     }
+    // componentDidUpdate=()=>{ //for debug
+    //     console.log(this.state.accel,this.state.gyro);
+    // }
     render(){
         return(
             <View>
@@ -91,9 +94,10 @@ export default class DroneScreen extends Component{
                     err={this.state.err}
                 />
                 <View style={style.main}>
-                    <Text style={style.activate} onPress={()=>{this.toggleUpdateWithSensor()}}>{this.state.updating?'Deactivate Sensor':'Activate Sensor'}</Text>
-                    {/* <FC info="Accel" data={this.state.accel}/>
-                    <FC info="Gyro" data={this.state.gyro}/> */}
+                    <TouchableOpacity onPress={()=>{}}>
+                        <Text style={style.activate} onPress={()=>{this.toggleUpdateWithSensor()}}>{this.state.updating?'Deactivate':'Activate Sensor'}</Text>
+                    </TouchableOpacity>
+
                     <SerialSend 
                         gyro={this.state.gyro}
                         accel={this.state.accel}
@@ -117,6 +121,7 @@ const style=StyleSheet.create({
     },
     activate: {
         marginTop: 10,
+        padding:10,
         backgroundColor: '#D6B572',
         width: 100,
         textAlign: 'center',

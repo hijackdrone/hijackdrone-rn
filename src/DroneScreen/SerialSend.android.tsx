@@ -13,25 +13,6 @@ type Props={
 }
 
 export default class SerialSend extends Component<Props,{}>{
-    socket: any,
-}
-type State={
-    serviceStarted: boolean,
-    connected: boolean,
-    usbAttached: boolean,
-    interface: number,
-    baudRate: number,
-    sendText: string,
-    error?: boolean,
-    code?: string,
-    device: any,
-    debug?: any,
-}
-
-// const usbs = new UsbSerial();
-// const usbs = new RNOtg();
-export default class SerialSend extends Component<Props,State>{
-    state: State;
     platform: string;
     constructor(props) {
         super(props);

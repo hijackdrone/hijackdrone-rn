@@ -40,7 +40,6 @@
 		ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED297162215061F000B7C4FE /* JavaScriptCore.framework */; };
 		ED2971652150620600B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED2971642150620600B7C4FE /* JavaScriptCore.framework */; };
 		A2131C3C18014964B9FBBFE0 /* libRNSensors.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 75E240DF13614C26A294E42F /* libRNSensors.a */; };
-		CCA375CFCE0D48ACB3B61A8B /* libRNOtg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9EBC502F22114338AE10A796 /* libRNOtg.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -350,8 +349,6 @@
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		D17E201E12484333B66E6CB1 /* RNSensors.xcodeproj */ = {isa = PBXFileReference; name = "RNSensors.xcodeproj"; path = "../node_modules/react-native-sensors/ios/RNSensors.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		75E240DF13614C26A294E42F /* libRNSensors.a */ = {isa = PBXFileReference; name = "libRNSensors.a"; path = "libRNSensors.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
-		2FBDA180439C41D3912EED95 /* RNOtg.xcodeproj */ = {isa = PBXFileReference; name = "RNOtg.xcodeproj"; path = "../node_modules/react-native-otg/ios/RNOtg.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
-		9EBC502F22114338AE10A796 /* libRNOtg.a */ = {isa = PBXFileReference; name = "libRNOtg.a"; path = "libRNOtg.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -381,7 +378,6 @@
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				A2131C3C18014964B9FBBFE0 /* libRNSensors.a in Frameworks */,
-				CCA375CFCE0D48ACB3B61A8B /* libRNOtg.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -572,7 +568,6 @@
 				00C302DF1ABCB9EE00DB3ED1 /* RCTVibration.xcodeproj */,
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
 				D17E201E12484333B66E6CB1 /* RNSensors.xcodeproj */,
-				2FBDA180439C41D3912EED95 /* RNOtg.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";

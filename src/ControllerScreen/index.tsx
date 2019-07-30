@@ -31,6 +31,9 @@ type State={
 }
 
 export default class ControllerScreen extends Component<{},State>{
+    static navigationOptions = {
+        swipeEnabled: false
+    }
     state: State={
         endpoint: endpoint,
         socket: null,
@@ -74,7 +77,7 @@ export default class ControllerScreen extends Component<{},State>{
 
                 {this.state.connected
                 ?<Controller socket={this.state.socket} pw={this.state.pw} />
-                :<View></View>
+                :<></>
                 }
             </View>
         );

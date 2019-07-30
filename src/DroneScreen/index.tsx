@@ -13,6 +13,9 @@ import {endpoint} from '../endpoint';
 let acc,gyro; //to make unsubscribing
 // let acc_v, gyro_v;   
 export default class DroneScreen extends Component{
+    static navigationOptions = {
+        swipeEnabled: false
+    }
     state={
         accel:{x:0,y:0,z:0},
         gyro:{x:0,y:0,z:0},

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { Keys } from './Key';
+import Draggable from 'react-native-draggable';
 
 type ControllerProps={
     socket: any,
@@ -16,11 +17,17 @@ export default class Controller extends Component<ControllerProps,{}>{
     render(){
         return(
             <View style={style.root}>
-                {Keys.map((e,i)=>(
+                {/* {Keys.map((e,i)=>(
                     <TouchableOpacity key={i} style={style.keys} onPressIn={()=>this.move(e.value)}>
                         <Text style={style.text}>{e.text}</Text>
                     </TouchableOpacity>
-                ))}
+                ))} */}
+                <Draggable
+                    renderSize={50}
+                    renderColor='black'
+                    offsetX={0} offsetY={0}
+                    renderText=''
+                />
             </View>
         )
     }

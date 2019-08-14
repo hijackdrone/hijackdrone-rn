@@ -17,11 +17,11 @@ export default class Controller extends Component<ControllerProps,{}>{
     render(){
         return(
             <View style={style.root}>
-                {/* {Keys.map((e,i)=>(
+                {Keys.map((e,i)=>(
                     <TouchableOpacity key={i} style={style.keys} onPressIn={()=>this.move(e.value)}>
                         <Text style={style.text}>{e.text}</Text>
                     </TouchableOpacity>
-                ))} */}
+                ))}
                 <Draggable
                     renderSize={50}
                     renderColor='black'

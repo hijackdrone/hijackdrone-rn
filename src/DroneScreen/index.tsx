@@ -64,7 +64,7 @@ export default class DroneScreen extends Component{
         socket.on('accept move',to=>{
             this.move(to);
         });
-        socket.on('crdis',()=>{
+        socket.on('wait',()=>{
             this.setState({connected: false})
         });
     }

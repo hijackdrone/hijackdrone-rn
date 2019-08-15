@@ -47,7 +47,7 @@ export default class ControllerScreen extends Component<{},State>{
 
     extraSocketMethod = (socket)=>{
         socket.emit('greeting',`rn controller : id = `);
-        socket.on('drdis',()=>{
+        socket.on('wait',()=>{
             this.setState({connected: false});
         });
     }

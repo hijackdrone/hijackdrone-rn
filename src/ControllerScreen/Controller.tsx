@@ -17,7 +17,7 @@ export default class Controller extends Component<ControllerProps, {}>{
     }
     const time = new Date().toISOString;
     socket.emit('move_start', [pw, v, time]);
-    for (let i = 0; i <= 1000; i++)
+    for (let i = 0; i <= 10; i++)
       socket.emit('tmp', [pw, v]);
     socket.emit('move', [pw, v, time]);
   }
@@ -29,7 +29,7 @@ export default class Controller extends Component<ControllerProps, {}>{
           <TouchableOpacity key={i} style={style.keys} onPressIn={() => this.move(e.value)}>
             <Text style={style.text}>{e.text}</Text>
           </TouchableOpacity>
-        ))}å
+        ))}
         {/* <Draggable
           renderSize={50}
           renderColor='black'

@@ -62,22 +62,19 @@ export default class SerialSend extends Component<Props,{}>{
         );
         RNSerialport.setInterface(-1); //default -1
         RNSerialport.setReturnedDataType(definitions.RETURNED_DATA_TYPES.HEXSTRING); //default INTARRAY
-        RNSerialport.setAutoConnectBaudRate(115200)
-        RNSerialport.setAutoConnect(true) // must be true for auto connect
+        RNSerialport.setAutoConnectBaudRate(115200);
+        RNSerialport.setAutoConnect(true); // must be true for auto connect
         RNSerialport.startUsbService(); //start usb listener
     }
     componentDidUpdate = ()=>{
+        const {gyro, accel}=this.props;
         RNSerialport.writeString(this.props.to)
     }
     componentWillUnmount = async() => {
         DeviceEventEmitter.removeAllListeners();
-        RNSerialport.isOpen(isOpen => {
-            if(isOpen) {
-                RNSerialport.disconnect();
-                RNSerialport.stopUsbService();
-            } else {
-                RNSerialport.stopUsbService();
-            }
+        RNSerialport.isOpen().then(()=>{
+            RNSerialport.disconnect();
+            RNSerialport.stopUsbService();
         });
     }
     
@@ -96,7 +93,7 @@ export default class SerialSend extends Component<Props,{}>{
     onServiceStarted=(response)=>{
         //returns usb status when service started
         if(response.deviceAttached) { 
-        this.onDeviceAttached();
+            this.onDeviceAttached();
         }
     }
     

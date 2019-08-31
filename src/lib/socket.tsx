@@ -5,6 +5,7 @@ import { endpoint } from '../endpoint';
 type SocketContextFunction = {
   leaveRoom?(value: [string, string]): void, //room, roll
   findRoom?(value: [string, string]): void, //room, roll
+  move?(value: [string, string, Date?]): void, //room, roll, TimeStamp
 }
 
 type SocketState = {
@@ -13,6 +14,7 @@ type SocketState = {
   connected: boolean,
   found: boolean,
   err: string,
+  to: string,
 }
 
 const SocketContext = React.createContext<SocketContextFunction & SocketState>({
@@ -21,6 +23,7 @@ const SocketContext = React.createContext<SocketContextFunction & SocketState>({
   connected: false,
   found: false,
   err: '',
+  to: '',
 });
 
 export class SocketProvider extends Component<{}, SocketState>{
@@ -30,6 +33,7 @@ export class SocketProvider extends Component<{}, SocketState>{
     connected: false,
     found: false,
     err: '',
+    to: '',
   }
 
   componentDidMount(){
@@ -54,7 +58,10 @@ export class SocketProvider extends Component<{}, SocketState>{
     const socket=this.state.socket;
     socket.emit('find room',value);
   }
-
+  move=(value: [string, string, Date?])=>{
+    const socket=this.state.socket;
+    socket.emit('move', value);
+  }
   removeError=(err: string)=>{
     if(err!=='') this.setState({err: ''});
   }
@@ -74,14 +81,17 @@ export class SocketProvider extends Component<{}, SocketState>{
       this.removeError(this.state.err);
       this.setState({connected: true});
     });
+    socket.on('accept move', (to: string)=>{
+      this.setState({to});
+    });
   }
 
   render(){
-    const { socket, room, connected, found, err } = this.state;
-    const { leaveRoom, findRoom } = this;
+    const { socket, room, connected, found, to, err } = this.state;
+    const { leaveRoom, findRoom, move } = this;
     return (
       <SocketContext.Provider value={{
-        socket, room, connected, found, err, leaveRoom, findRoom
+        socket, room, connected, found, to, err, leaveRoom, findRoom, move
       }}>
         {this.props.children}
       </SocketContext.Provider>

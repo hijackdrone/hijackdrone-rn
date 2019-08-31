@@ -23,6 +23,8 @@ target 'Commu_test' do
   pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
+  pod 'RNSensors', :path => '../node_modules/react-native-sensors'
+
   target 'Commu_testTests' do
     inherit! :search_paths
     # Pods for testing

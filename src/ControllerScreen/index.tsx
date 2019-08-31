@@ -62,7 +62,7 @@ export default class ControllerScreen extends Component<{}, State>{
 					/>
 
 					{socket.connected
-						? <Controller socket={socket} pw={socket.room} />
+						? <Controller move={(value: string)=>socket.move([socket.room, value])} room={socket.room} />
 						: <></>
 					}
 				</View>

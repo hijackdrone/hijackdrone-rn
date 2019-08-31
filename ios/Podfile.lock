@@ -79,9 +79,9 @@ PODS:
     - React-Core (= 0.60.5)
   - React-RCTWebSocket (0.60.5):
     - React-Core (= 0.60.5)
-  - RNGestureHandler (1.1.0):
+  - RNGestureHandler (1.4.1):
     - React
-  - RNSensors (5.1.8):
+  - RNSensors (5.3.1):
     - React
   - yoga (0.60.5.React)
 
@@ -184,10 +184,10 @@ SPEC CHECKSUMS:
   React-RCTText: b074d89033583d4f2eb5faf7ea2db3a13c7553a2
   React-RCTVibration: 2105b2e0e2b66a6408fc69a46c8a7fb5b2fdade0
   React-RCTWebSocket: cd932a16b7214898b6b7f788c8bddb3637246ac4
-  RNGestureHandler: b65d391f4f570178d657b99a16ec99d09b8656b0
-  RNSensors: f864c14257f92af26af56886ae62c2be0301df54
+  RNGestureHandler: 4cb47a93019c1a201df2644413a0a1569a51c8aa
+  RNSensors: c3b52c1f85e8153a2a23a343880dc2fd52037eed
   yoga: 312528f5bbbba37b4dcea5ef00e8b4033fdd9411
 
-PODFILE CHECKSUM: d15bdc4cae17b5929537d0a66fb0da1337f0fcae
+PODFILE CHECKSUM: 9d57429ceb94976d6c52a90152a804097db493fb
 
 COCOAPODS: 1.7.5

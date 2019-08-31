@@ -4,29 +4,29 @@ import { Keys } from './Key';
 import Draggable from 'react-native-draggable';
 
 type ControllerProps = {
-  socket: any,
-  pw: string,
+  move(value: string): void,
+  room: string,
 }
 export default class Controller extends Component<ControllerProps, {}>{
-  move = (value) => {
-    const socket = this.props.socket;
-    const pw = this.props.pw;
-    let v = value;
-    for (let i = 0; i <= 15; i++) {
-      v += v;
-    }
-    const time = new Date().toISOString;
-    socket.emit('move_start', [pw, v, time]);
-    for (let i = 0; i <= 10; i++)
-      socket.emit('tmp', [pw, v]);
-    socket.emit('move', [pw, v, time]);
-  }
+  // move = (value) => {
+  //   const socket = this.props.socket;
+  //   const pw = this.props.pw;
+  //   let v = value;
+  //   for (let i = 0; i <= 15; i++) {
+  //     v += v;
+  //   }
+  //   const time = new Date().toISOString;
+  //   socket.emit('move_start', [pw, v, time]);
+  //   for (let i = 0; i <= 10; i++)
+  //     socket.emit('tmp', [pw, v]);
+  //   socket.emit('move', [pw, v, time]);
+  // }
 
   render() {
     return (
       <View style={style.root}>
         {Keys.map((e, i) => (
-          <TouchableOpacity key={i} style={style.keys} onPressIn={() => this.move(e.value)}>
+          <TouchableOpacity key={i} style={style.keys} onPressIn={() => this.props.move(e.value)}>
             <Text style={style.text}>{e.text}</Text>
           </TouchableOpacity>
         ))}

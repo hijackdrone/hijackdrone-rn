@@ -11,11 +11,18 @@ type Props = {
 	updating: boolean,
 }
 
-export default class SerialSend extends Component<Props, {}>{
+type SerialSendState = {
+	connected: boolean,
+	attached: boolean,
+}
+export default class SerialSend extends Component<Props, SerialSendState>{
 	platform: string;
 	constructor(props) {
 		super(props);
-
+		this.state={
+			connected: false,
+			attached: false,
+		}
 		this.platform = Platform.OS;
 	}
 	componentDidMount() {
@@ -67,6 +74,8 @@ export default class SerialSend extends Component<Props, {}>{
 	}
 	componentDidUpdate = () => {
 		const { gyro, accel } = this.props;
+		console.log(gyro, accel);
+		console.log(RNSerialport);
 		RNSerialport.writeString(this.props.to)
 	}
 	componentWillUnmount = async () => {
@@ -79,15 +88,15 @@ export default class SerialSend extends Component<Props, {}>{
 
 	/* BEGIN Listener Methods */
 
-	onDeviceAttached = () => { console.log("Device Attached"); }
+	onDeviceAttached = () => { this.setState({attached: true}); console.log("Device Attached"); }
 
-	onDeviceDetached = () => { console.log("Device Detached") }
+	onDeviceDetached = () => { this.setState({attached: false}); console.log("Device Detached") }
 
 	onError = (error) => { console.log("Code: " + error.errorCode + " Message: " + error.errorMessage) }
 
-	onConnected = () => { console.log("Connected") }
+	onConnected = () => { this.setState({connected: true}); console.log("Connected") }
 
-	onDisconnected = () => { console.log("Disconnected") }
+	onDisconnected = () => { this.setState({connected: false}); console.log("Disconnected") }
 
 	onServiceStarted = (response) => {
 		//returns usb status when service started
@@ -106,6 +115,8 @@ export default class SerialSend extends Component<Props, {}>{
 			<View>
 				<Text>SerialSend component</Text>
 				<Text>Platform : {this.platform}</Text>
+				<Text>usb attached: {this.state.attached? "true":"false"}</Text>
+				<Text>usb connected: {this.state.connected? "true":"false"}</Text>
 			</View>
 		)
 	}

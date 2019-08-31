@@ -11,13 +11,16 @@ import React, {Component} from 'react';
 import MainNavigator from './MainNavigator';
 import { SafeAreaView } from 'react-navigation';
 import { View, Text } from 'react-native';
+import { SocketProvider } from './lib/socket';
 
 export default class App extends Component {
   render() {
     return (
       <View style={{flex: 1}}>
         <SafeAreaView style={{flex: 1, flexGrow: 0, backgroundColor: '#005089'}} forceInset={{bottom: 'never'}}></SafeAreaView>
-        <MainNavigator />
+        <SocketProvider>
+          <MainNavigator />
+        </SocketProvider>
       </View>
     );
   }

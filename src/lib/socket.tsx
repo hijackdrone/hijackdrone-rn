@@ -44,7 +44,8 @@ export class SocketProvider extends Component<{}, SocketState>{
   // leaveRoom?(value: [string, string]): void, //room, roll
   leaveRoom=(value: [string, string])=>{
     const socket=this.state.socket;
-    socket.emit('leave room', value);
+    // console.log('leaveRoom', value);
+    if(value[0]!=='') socket.emit('leave room', value);
     this.setState({connected: false, found: false});
   }
 
@@ -77,9 +78,10 @@ export class SocketProvider extends Component<{}, SocketState>{
 
   render(){
     const { socket, room, connected, found, err } = this.state;
+    const { leaveRoom, findRoom } = this;
     return (
       <SocketContext.Provider value={{
-        socket, room, connected, found, err,
+        socket, room, connected, found, err, leaveRoom, findRoom
       }}>
         {this.props.children}
       </SocketContext.Provider>
